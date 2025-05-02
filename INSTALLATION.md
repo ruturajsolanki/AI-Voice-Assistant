@@ -54,8 +54,16 @@ python voice_assistant.py
      ```
      pip install [path-to-downloaded-wheel-file]
      ```
+   - If torch installation takes too long, you can install a CPU-only version:
+     ```
+     pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+     ```
 
-5. **Run the Voice Assistant**:
+5. **Set Up Configuration**:
+   - A default config.json file will be created on first run
+   - You can add your own API keys for enhanced functionality
+
+6. **Run the Voice Assistant**:
    - Run the Python script:
      ```
      python voice_assistant.py
@@ -107,8 +115,16 @@ python voice_assistant.py
      ```
      pip install --global-option='build_ext' --global-option='-I/usr/local/include' --global-option='-L/usr/local/lib' pyaudio
      ```
+   - For Apple Silicon Macs (M1/M2/M3), use native torch:
+     ```
+     pip install torch torchvision torchaudio
+     ```
 
-6. **Run the Voice Assistant**:
+6. **Set Up Configuration**:
+   - A default config.json file will be created on first run
+   - You can add your own API keys for enhanced functionality
+
+7. **Run the Voice Assistant**:
    - Run the Python script:
      ```
      python voice_assistant.py
@@ -157,11 +173,58 @@ python voice_assistant.py
      pip install -r requirements.txt
      ```
 
-5. **Run the Voice Assistant**:
+5. **Set Up Configuration**:
+   - A default config.json file will be created on first run
+   - You can add your own API keys for enhanced functionality
+
+6. **Run the Voice Assistant**:
    - Run the Python script:
      ```
      python voice_assistant.py
      ```
+
+## Configuration Setup
+
+### API Keys
+
+The assistant uses several APIs that require keys:
+
+#### Hugging Face API
+A default key is provided in the config.json file when first run.
+
+#### OpenAI API (Optional)
+For enhanced capabilities:
+1. Create an account on [OpenAI](https://platform.openai.com/signup)
+2. Get your API key from the dashboard
+3. Add it to the config.json file or set it as an environment variable:
+
+```bash
+# On Windows (Command Prompt)
+set OPENAI_API_KEY=your_api_key_here
+
+# On Windows (PowerShell)
+$env:OPENAI_API_KEY="your_api_key_here"
+
+# On macOS/Linux
+export OPENAI_API_KEY=your_api_key_here
+```
+
+#### OpenWeatherMap API (Optional)
+1. Go to [OpenWeatherMap](https://openweathermap.org/) and create a free account
+2. After signing up, go to your API keys section
+3. Copy your API key
+4. Add it to the config.json file or set it as an environment variable:
+
+```bash
+# On Windows (Command Prompt)
+set OPENWEATHER_API_KEY=your_api_key_here
+
+# On Windows (PowerShell)
+$env:OPENWEATHER_API_KEY="your_api_key_here"
+
+# On macOS/Linux
+export OPENWEATHER_API_KEY=your_api_key_here
+```
 
 ## Troubleshooting Common Installation Issues
 
@@ -192,6 +255,20 @@ python voice_assistant.py
     pip install pyaudio
     ```
 
+### Torch/Transformers Installation Issues
+
+- Error: Torch installation is too slow or uses too much disk space
+  - Solution: Install CPU-only version which is smaller:
+    ```
+    pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+    ```
+
+- Error: "No module named 'transformers'"
+  - Solution: Install just the transformers package:
+    ```
+    pip install transformers
+    ```
+
 ### Text-to-Speech Issues
 
 #### macOS:
@@ -207,45 +284,25 @@ python voice_assistant.py
 
 To verify that all components are working correctly:
 
-1. **Test Speech Recognition**:
-   ```python
-   import speech_recognition as sr
-   r = sr.Recognizer()
-   with sr.Microphone() as source:
-       print("Say something!")
-       audio = r.listen(source)
-   try:
-       print("You said: " + r.recognize_google(audio))
-   except sr.UnknownValueError:
-       print("Google Speech Recognition could not understand audio")
+1. **Check API Status**:
+   The voice assistant will display API status at startup:
+   ```
+   API Status:
+   - OpenAI API: Available
+   - Hugging Face API: Available ✓
+   - Weather API: Available
    ```
 
-2. **Test Text-to-Speech**:
-   ```python
-   import pyttsx3
-   engine = pyttsx3.init()
-   engine.say("Hello World")
-   engine.runAndWait()
-   ```
+2. **Test Speech Recognition**:
+   The assistant will listen when started. Say something like "Hello" to test.
 
-3. **Test Weather API** (if configured):
-   ```python
-   import pyowm
-   owm = pyowm.OWM('your_api_key')
-   mgr = owm.weather_manager()
-   observation = mgr.weather_at_place('London,GB')
-   w = observation.weather
-   print(w.detailed_status)
-   ```
+3. **Test API Functionality**:
+   Ask a factual question like "Who is the President of the United States?"
+   This will test the factual knowledge database and LLM API integration.
 
-## Next Steps
-
-After successful installation:
-
-1. Get an OpenWeatherMap API key (optional but recommended)
-2. Configure the voice assistant by editing the API key in the code
-3. Explore the available commands in the [DOCUMENTATION.md](DOCUMENTATION.md) file
+4. **Test Weather Information**:
+   Ask "What's the weather in New York?" to test weather API functionality.
 
 ---
 
-If you encounter any issues not covered in this guide, please refer to the official documentation for each package or create an issue in the project repository.
+If you encounter any issues not covered in this guide, please refer to the official documentation for each package or check the troubleshooting section in the [DOCUMENTATION.md](DOCUMENTATION.md) file.

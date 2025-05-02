@@ -1,12 +1,14 @@
 # Python virtual environment
 venv/
 env/
-ENV/
 
 # Python bytecode
 __pycache__/
 *.py[cod]
 *$py.class
+
+# API keys and configuration
+config.json
 
 # Distribution / packaging
 dist/
@@ -30,3 +32,6 @@ build/
 
 # Windows specific files
 Thumbs.db
+
+# Jupyter Notebooks checkpoints
+.ipynb_checkpoints/

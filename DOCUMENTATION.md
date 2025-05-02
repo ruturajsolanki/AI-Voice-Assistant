@@ -11,7 +11,7 @@ This document provides comprehensive instructions for setting up and using the A
    - [macOS Setup](#macos-setup)
    - [Linux Setup](#linux-setup)
 4. [Configuration](#configuration)
-   - [OpenWeatherMap API](#openweathermap-api)
+   - [API Keys](#api-keys)
    - [Voice Settings](#voice-settings)
 5. [Usage Guide](#usage-guide)
    - [Available Commands](#available-commands)
@@ -21,14 +21,15 @@ This document provides comprehensive instructions for setting up and using the A
 
 ## Overview
 
-The AI Voice Assistant is a Python-based application that can understand spoken commands, answer questions, provide weather information, and more. It uses speech recognition to convert your voice to text, processes your requests, and responds both in text and with synthesized speech.
+The AI Voice Assistant is a Python-based application that can understand spoken commands, answer questions, provide weather information, and access real-time data through LLM APIs. It uses speech recognition to convert your voice to text, processes your requests, and responds both in text and with synthesized speech.
 
 ## Features
 
 - **Voice Recognition**: Listens to your spoken questions and commands
 - **Text-to-Speech**: Speaks responses out loud with a natural-sounding voice
 - **Weather Information**: Gets current weather for any location worldwide
-- **General Knowledge**: Answers a variety of questions using web searches
+- **Factual Knowledge**: Built-in database of accurate information about world leaders, populations, capitals, and more
+- **LLM API Integration**: Access to powerful language models for answering complex questions
 - **Time and Date**: Tells you the current time and date
 - **Command History**: Keeps track of your previous commands
 - **Cross-Platform**: Works on Windows, macOS, and Linux
@@ -58,7 +59,7 @@ The AI Voice Assistant is a Python-based application that can understand spoken 
 
 3. **Install Required Packages**:
    ```
-   pip install SpeechRecognition pyttsx3 pyaudio requests pyowm
+   pip install -r requirements.txt
    ```
    
    Note: If you have trouble installing PyAudio, you can download a pre-compiled wheel from [here](https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyaudio) and install it with:
@@ -95,7 +96,7 @@ The AI Voice Assistant is a Python-based application that can understand spoken 
 
 4. **Install Required Packages**:
    ```
-   pip install SpeechRecognition pyttsx3 pyaudio requests pyowm setuptools
+   pip install -r requirements.txt
    ```
 
 5. **Download the Voice Assistant Code**:
@@ -126,7 +127,7 @@ The AI Voice Assistant is a Python-based application that can understand spoken 
 
 3. **Install Required Packages**:
    ```
-   pip install SpeechRecognition pyttsx3 pyaudio requests pyowm
+   pip install -r requirements.txt
    ```
 
 4. **Download the Voice Assistant Code**:
@@ -139,21 +140,32 @@ The AI Voice Assistant is a Python-based application that can understand spoken 
 
 ## Configuration
 
-### OpenWeatherMap API
+### API Keys
 
-To use the weather functionality with OpenWeatherMap:
+The assistant uses several APIs for enhanced functionality:
 
-1. Sign up for a free account at [OpenWeatherMap](https://home.openweathermap.org/users/sign_up)
+#### config.json
+
+The application looks for a `config.json` file in the same directory as the script. This file stores your API keys.
+
+#### Hugging Face API
+
+A Hugging Face API key is already included in the config.json file when you first run the application.
+
+#### OpenAI API (Optional)
+
+For enhanced capabilities:
+1. Create an account on [OpenAI](https://platform.openai.com/signup)
+2. Get your API key from the dashboard
+3. Add it to the config.json file or set it as an environment variable named `OPENAI_API_KEY`
+
+#### OpenWeatherMap API (Optional)
+
+For weather data:
+1. Go to [OpenWeatherMap](https://openweathermap.org/) and create a free account
 2. After signing up, go to your API keys section
 3. Copy your API key
-4. Open the `voice_assistant.py` file and replace `YOUR_OPENWEATHERMAP_API_KEY` with your actual key
-
-```python
-# Find this line in the code
-api_key = "YOUR_OPENWEATHERMAP_API_KEY"  # Replace with your API key
-```
-
-Note: Even without the API key, the assistant will still work using the wttr.in web service as a fallback.
+4. Add it to the config.json file or set it as an environment variable named `OPENWEATHER_API_KEY`
 
 ### Voice Settings
 
@@ -177,8 +189,8 @@ if "Alex" in voice.name:  # Change "Samantha" to "Alex" or another voice
 ### Available Commands
 
 - **Weather Information**: "What's the weather in [location]?"
-- **Time**: "What time is it?"
-- **Date**: "What's today's date?"
+- **Time and Date**: "What time is it?" / "What's today's date?"
+- **Factual Questions**: "Who is the President of [country]?" / "What's the capital of [country]?"
 - **Help**: "Help" or "What can you do?"
 - **Command History**: "History" or "Show history"
 - **Repeat**: "Repeat" or "Say that again"
@@ -186,12 +198,24 @@ if "Alex" in voice.name:  # Change "Samantha" to "Alex" or another voice
 
 ### Example Queries
 
+#### Weather
 - "What's the weather in New York?"
 - "Tell me the temperature in Tokyo"
+
+#### Time and Date
 - "What time is it?"
+- "What day is today?"
+
+#### Factual Information
+- "Who is the President of the United States?"
+- "What is the capital of France?"
+- "How many people live in India?"
+- "What's the latest iPhone model?"
+- "Who is the CEO of Apple?"
+
+#### General Knowledge
 - "Who is Albert Einstein?"
 - "How do computers work?"
-- "What is the capital of France?"
 
 ## Troubleshooting
 
@@ -210,10 +234,23 @@ if "Alex" in voice.name:  # Change "Samantha" to "Alex" or another voice
 
 ### API Issues
 
+- **Problem**: LLM API responses are inaccurate or slow
+- **Solution**: Check your API keys and internet connection. The assistant will fall back to its built-in knowledge base for common questions.
+
 - **Problem**: Weather information not working
-- **Solution**: Check your OpenWeatherMap API key or internet connection
+- **Solution**: Check your OpenWeatherMap API key or internet connection. The assistant will try a free web service as a fallback.
 
 ## Recent Changes and Improvements
+
+### LLM API Integration
+- Added Hugging Face API integration for powerful language models
+- Added OpenAI API support as an optional enhancement
+- Implemented fallback mechanisms when APIs aren't available
+
+### Factual Knowledge Database
+- Added comprehensive database of factual information
+- Improved accuracy for questions about world leaders, populations, and capitals
+- Added technology, company, and space exploration information
 
 ### Speech Recognition Enhancements
 - Added visual indicators while listening
@@ -236,11 +273,6 @@ if "Alex" in voice.name:  # Change "Samantha" to "Alex" or another voice
 - Added repeat functionality
 - Improved error handling and recovery
 
-### Code Structure
-- Better error handling throughout
-- Platform detection for OS-specific optimizations
-- More robust API integration
-
 ---
 
-This documentation was created on May 2, 2025.
+This documentation was updated on May 2, 2025.

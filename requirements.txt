@@ -10,6 +10,12 @@ requests==2.32.3
 # Weather API
 pyowm==3.3.0
 
+# LLM API Integration
+openai==1.5.0
+transformers==4.35.0
+torch==2.1.0  # Required for some Hugging Face models
+sentencepiece==0.1.99  # Required for text tokenization
+
 # Dependencies
 certifi==2025.4.26
 charset-normalizer==3.4.1
